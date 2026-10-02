@@ -2,12 +2,28 @@
 # 🍃 EcoScale — Next-Gen AI Green DevOps Platform
 
 <p align="center">
-  <img src="https://shields.io" alt="Python">
-  <img src="https://shields.io" alt="MySQL">
-  <img src="https://shields.io" alt="Flask">
-  <img src="https://shields.io" alt="Gemini AI">
-  <img src="https://shields.io" alt="MIT License">
+  <a href="https://github.com">
+    <img src="https://shields.io" alt="Python" />
+  </a>
+  <a href="https://github.com">
+    <img src="https://shields.io" alt="MySQL" />
+  </a>
+  <a href="https://github.com">
+    <img src="https://shields.io" alt="Flask" />
+  </a>
+  <a href="https://github.com">
+    <img src="https://shields.io" alt="Gemini AI" />
+  </a>
+  <a href="https://github.com">
+    <img src="https://shields.io" alt="Tailwind CSS" />
+  </a>
 </p>
+
+<p align="center">
+  <img src="https://shields.io" alt="Stars" />
+  <img src="https://shields.io" alt="Forks" />
+</p>
+
 
 ---
 
