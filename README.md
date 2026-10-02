@@ -8,12 +8,6 @@
 
 ---
 
-<p align="center">
-  <img src="https://shields.io" alt="Stars" />
-  <img src="https://shields.io" alt="Forks" />
-</p>
-
-
 ---
 
 ## 💻 About The Project
