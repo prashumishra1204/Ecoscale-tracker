@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoScale // Green DevOps Dashboard</title>
+    <!-- Tailwind CSS for sleek styling -->
+    <script src="https://jsdelivr.net"></script>
+    <!-- Chart.js for data visualization -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        body { background-color: #090D10; color: #F8FAFC; }
+    </style>
+</head>
+<body class="font-sans antialiased p-8">
+
+    <!-- Header Panel -->
+    <div class="max-w-6xl mx-auto mb-10 flex justify-between items-center border-b border-gray-800 pb-5">
+        <div>
+            <h1 class="text-3xl font-extrabold tracking-wider text-emerald-400">🍃 ECOSCALE</h1>
+            <p class="text-gray-400 text-sm mt-1">Green DevOps & Carbon Intensity Monitoring Engine</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span class="relative flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            <span class="text-xs tracking-widest text-emerald-400 font-mono">LIVE DATALOGGER ACTIVE</span>
+        </div>
+    </div>
+
+    <!-- Main Grid Content -->
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Stat Card 1 -->
+        <div class="bg-[#141B22] p-6 rounded-xl border border-gray-800 shadow-xl">
+            <h3 class="text-xs uppercase tracking-wider text-gray-400 mb-2">Total Monitored Nodes</h3>
+            <p class="text-4xl font-mono font-bold text-slate-100">4 Active</p>
+        </div>
+        <!-- Stat Card 2 -->
+        <div class="bg-[#141B22] p-6 rounded-xl border border-gray-800 shadow-xl">
+            <h3 class="text-xs uppercase tracking-wider text-gray-400 mb-2">Average CPU Load</h3>
+            <p id="avg-cpu" class="text-4xl font-mono font-bold text-lime-400">--%</p>
+        </div>
+        <!-- Stat Card 3 -->
+        <div class="bg-[#141B22] p-6 rounded-xl border border-gray-800 shadow-xl">
+            <h3 class="text-xs uppercase tracking-wider text-gray-400 mb-2">Total Carbon Emitted</h3>
+            <p id="total-carbon" class="text-4xl font-mono font-bold text-amber-500">--g</p>
+        </div>
+    </div>
+        <!-- AI Optimization Console Card -->
+    <div class="max-w-6xl mx-auto bg-[#141B22] p-6 rounded-xl border border-emerald-900/50 shadow-xl mb-8">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-200 tracking-wide">AI Environmental Optimization Copilot</h2>
+                <p class="text-xs text-gray-400">Leverages Google Gemini to audit live cluster logs for carbon inefficiencies</p>
+            </div>
+            <button onclick="runAiAudit()" id="ai-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold py-2 px-5 rounded-lg shadow transition-all cursor-pointer">
+                ⚡ Run Carbon Audit
+            </button>
+        </div>
+        <!-- AI Advice Box Pane -->
+        <div id="ai-response-box" class="hidden bg-[#090D10] border border-gray-800 p-4 rounded-lg font-mono text-sm text-emerald-300 whitespace-pre-line leading-relaxed">
+            Analyzing infrastructure health vectors...
+        </div>
+    </div>
+
+
+    <!-- Chart Panel Section -->
+    <div class="max-w-6xl mx-auto bg-[#141B22] p-6 rounded-xl border border-gray-800 shadow-xl mb-8">
+        <h2 class="text-lg font-semibold text-slate-200 mb-4 tracking-wide">Real-time Carbon Footprint Timeline (grams of CO₂ / sec)</h2>
+        <div class="h-80 w-full">
+            <canvas id="carbonChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Log Table Section -->
+    <div class="max-w-6xl mx-auto bg-[#141B22] rounded-xl border border-gray-800 shadow-xl overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-800">
+            <h2 class="text-md font-semibold text-slate-200">System Activity Stream</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-[#0D131A] text-xs uppercase text-gray-400 tracking-wider">
+                        <th class="p-4 border-b border-gray-800">Timestamp</th>
+                        <th class="p-4 border-b border-gray-800">Server Node</th>
+                        <th class="p-4 border-b border-gray-800 text-center">CPU %</th>
+                        <th class="p-4 border-b border-gray-800 text-center">RAM %</th>
+                        <th class="p-4 border-b border-gray-800 text-right">Carbon (g CO₂)</th>
+                    </tr>
+                </thead>
+                <tbody id="log-table-body" class="text-sm font-mono divide-y divide-gray-800">
+                    <!-- Logs will inject dynamically here via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Client-side Dashboard Application Code -->
+    <script>
+        // Setup Chart.js configuration context
+        const ctx = document.getElementById('carbonChart').getContext('2d');
+        const carbonChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Carbon Intensity Score',
+                    data: [],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { color: '#1E293B' }, ticks: { color: '#94A3B8' } },
+                    y: { grid: { color: '#1E293B' }, ticks: { color: '#94A3B8' } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Function to asynchronously stream fresh server data from our Python backend API
+        async function updateDashboard() {
+            try {
+                const response = await fetch('/api/metrics');
+                const result = await response.json();
+                
+                if (result.status === "Success" && result.data.length > 0) {
+                    const logs = result.data;
+                    const reverseLogs = [...logs].reverse(); // Chart likes chronologically forward data
+                    
+                    // 1. Refresh Graphical Timeline
+                    carbonChart.data.labels = reverseLogs.map(l => new Date(l.timestamp).toLocaleTimeString());
+                    carbonChart.data.datasets[0].data = reverseLogs.map(l => l.carbon_emitted);
+                    carbonChart.data.update();
+
+                    // 2. Compute Metric Aggregations
+                    let totalCpu = 0;
+                    let aggregateCarbon = 0;
+                    logs.forEach(l => {
+                        totalCpu += l.cpu_usage;
+                        aggregateCarbon += l.carbon_emitted;
+                    });
+                    
+                    document.getElementById('avg-cpu').innerText = (totalCpu / logs.length).toFixed(1) + '%';
+                    document.getElementById('total-carbon').innerText = aggregateCarbon.toFixed(1) + 'g';
+
+                    // 3. Re-populate Log Stream Table Rows
+                    const tbody = document.getElementById('log-table-body');
+                    tbody.innerHTML = '';
+                    logs.forEach(l => {
+                        const row = `
+                            <tr class="hover:bg-[#1A232E] transition-colors">
+                                <td class="p-4 text-gray-400">${new Date(l.timestamp).toLocaleTimeString()}</td>
+                                <td class="p-4 text-emerald-400 font-semibold">${l.server_name}</td>
+                                <td class="p-4 text-center text-lime-400">${l.cpu_usage}%</td>
+                                <td class="p-4 text-center text-cyan-400">${l.ram_usage}%</td>
+                                <td class="p-4 text-right text-amber-500 font-bold">${l.carbon_emitted}g</td>
+                            </tr>
+                        `;
+                        tbody.innerHTML += row;
+                    });
+                }
+            } catch (error) {
+                console.error("Dashboard synchronization malfunction:", error);
+            }
+        }
+        // Function to call our backend AI route and handle response layout states
+                // Upgraded frontend click handler with proper retry tracking
+        async function runAiAudit() {
+            const btn = document.getElementById('ai-btn');
+            const box = document.getElementById('ai-response-box');
+            
+            btn.innerText = "⏳ Processing AI Logs...";
+            btn.disabled = true;
+            box.classList.remove('hidden');
+            box.innerText = "📡 Connecting to Gemini API engine...";
+
+            try {
+                const res = await fetch('/api/optimize');
+                const result = await res.json();
+                
+                if (result.status === "Success") {
+                    box.innerText = result.advice;
+                } else {
+                    // Smart handling for temporary 503 traffic spikes
+                    if (result.message.includes("503") || result.message.includes("demand")) {
+                        box.innerText = "⚠️ Google's AI servers are temporarily busy (High Demand). Please wait 5 seconds and click the button again to retry!";
+                    } else {
+                        box.innerText = "⚠️ System Error: " + result.message;
+                    }
+                }
+            } catch (err) {
+                box.innerText = "⚠️ Network timeout connecting to backend microservices.";
+            } finally {
+                btn.innerText = "⚡ Run Carbon Audit";
+                btn.disabled = false;
+            }
+        }
+
+
+        // Poll our Python backend API for new metrics entries every 3 seconds
+        setInterval(updateDashboard, 3000);
+        updateDashboard(); // Execution trigger on workspace initial boot
+    </script>
+</body>
+</html>
