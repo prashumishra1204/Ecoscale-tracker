@@ -1,23 +1,12 @@
-# Ecoscale-tracker
 # 🍃 EcoScale — Next-Gen AI Green DevOps Platform
 
-<p align="center">
-  <a href="https://github.com">
-    <img src="https://shields.io" alt="Python" />
-  </a>
-  <a href="https://github.com">
-    <img src="https://shields.io" alt="MySQL" />
-  </a>
-  <a href="https://github.com">
-    <img src="https://shields.io" alt="Flask" />
-  </a>
-  <a href="https://github.com">
-    <img src="https://shields.io" alt="Gemini AI" />
-  </a>
-  <a href="https://github.com">
-    <img src="https://shields.io" alt="Tailwind CSS" />
-  </a>
-</p>
+### 🛠️ Core Engineering Infrastructure Matrix
+```text
+[⚙️ Core Engine: Python 3.10+] ── [🛢️ Relational Store: MySQL 8.0] ── [🌐 Routing Layer: Flask]
+[🧠 AI Core: Google Gemini API] ── [🎨 Design Vector: Tailwind CSS] ── [📊 Data Canvas: Chart.js]
+```
+
+---
 
 <p align="center">
   <img src="https://shields.io" alt="Stars" />
